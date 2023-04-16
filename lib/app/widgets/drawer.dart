@@ -1,15 +1,17 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:todolist/app/data/provideData/darkThemeProvider.dart';
+import 'package:todolist/app/const/theme.dart';
 import 'package:todolist/app/data/provideData/userInfoProvider.dart';
+import 'package:todolist/app/pages/darkMode.dart';
 import 'package:todolist/app/pages/intro.dart';
-import 'package:todolist/app/pages/details.dart';
-import 'package:todolist/app/user/login.dart';
+import 'package:todolist/app/pages/userInfo.dart';
+import 'package:todolist/app/pages/login.dart';
+import 'package:todolist/app/pages/setting.dart';
+
 import 'package:todolist/main.dart';
 import 'package:todolist/model/userInfo.dart';
 
@@ -38,24 +40,27 @@ class MyDrawer extends StatelessWidget {
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: ClipOval(
-                        child: user.avatar == ''
-                            ? Image.asset(
-                                "person.png",
-                                width: 80,
-                              )
-                            : Image.file(
-                                File(user.avatar!),
-                                width: 80,
-                                height: 80,
-                                fit: BoxFit.fill,
-                              ),
-                        // Image.network(
-                        //     user.avatar!,
-                        //     width: 80,
-                        //     height: 80,
-                        //     fit: BoxFit.fill,
-                        //   ),
+                      child: Hero(
+                        tag: "avatar",
+                        child: ClipOval(
+                          child: user.avatar == ''
+                              ? Image.asset(
+                                  "person.png",
+                                  width: 80,
+                                )
+                              : Image.file(
+                                  File(user.avatar!),
+                                  width: 80,
+                                  height: 80,
+                                  fit: BoxFit.fill,
+                                ),
+                          // Image.network(
+                          //     user.avatar!,
+                          //     width: 80,
+                          //     height: 80,
+                          //     fit: BoxFit.fill,
+                          //   ),
+                        ),
                       ),
                     ),
                     Text(
@@ -70,14 +75,24 @@ class MyDrawer extends StatelessWidget {
               child: ListView(
                 children: <Widget>[
                   ListTile(
-                    onTap: () => Get.to(LoginScreen()),
+                    onTap: () => Get.to(LoginPage()),
                     leading: const Icon(Icons.settings_outlined),
-                    title: const Text('设置'),
+                    title: Text(
+                      '登录页',
+                      style: mytheme.headline2,
+                    ),
                   ),
                   ListTile(
-                    onTap: () => EasyLoading.showSuccess('功能发开中'),
+                    onTap: () => Get.to(SettingPage()),
+                    leading: const Icon(Icons.settings_outlined),
+                    title: Text('设置页面', style: mytheme.headline2),
+                  ),
+                  ListTile(
+                    onTap: () => EasyLoading.showSuccess(
+                      '功能发开中',
+                    ),
                     leading: const Icon(Icons.done_all),
-                    title: const Text('每日打卡'),
+                    title: Text('每日打卡', style: mytheme.headline2),
                   ),
                   ListTile(
                     onTap: () {
@@ -85,57 +100,24 @@ class MyDrawer extends StatelessWidget {
                       Get.to(Intro());
                     },
                     leading: const Icon(Icons.add),
-                    title: const Text('设置日程'),
+                    title: Text('设置日程', style: mytheme.headline2),
                   ),
                   ListTile(
                     leading: const Icon(Icons.add),
-                    title: const Text(
-                      'ARKNIGHT',
-                    ),
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.add),
-                    title: const Text(
-                      'ARKNIGHT',
-                      style: TextStyle(
-                        fontFamily: "NoveCentoWide",
-                        // fontWeight: FontWeight.w700
-                      ),
-                    ),
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.add),
-                    title: const Text(
-                      'ARKNIGtT啊',
-                      style: TextStyle(
-                          fontFamily: "NoveCentoWide",
-                          fontWeight: FontWeight.w700),
-                    ),
+                    title: Text('ARKNIGHT', style: mytheme.headline2),
                   ),
                   ListTile(
                     title: InkWell(
                       onTap: () {
-                        Provider.of<DarkThemeProvider>(context, listen: false)
-                            .pressFollow();
+                        Get.to(DarkModePage());
+                        // Provider.of<DarkThemeProvider>(context, listen: false)
+                        //     .pressFollow();
                       },
-                      child: Text("深色模式 >"),
+                      child: Text("深色模式", style: mytheme.headline2),
                     ),
                     leading: Theme.of(context).brightness == Brightness.light
                         ? Icon(Icons.brightness_5)
                         : Icon(Icons.brightness_2),
-                    trailing: Provider.of<DarkThemeProvider>(
-                      context,
-                    ).followSystem
-                        ? Text("跟随系统")
-                        : CupertinoSwitch(
-                            value: Provider.of<DarkThemeProvider>(context,
-                                    listen: false)
-                                .isDark,
-                            onChanged: (value) {
-                              Provider.of<DarkThemeProvider>(context,
-                                      listen: false)
-                                  .switchTheme(value);
-                            }),
                   ),
                 ],
               ),
