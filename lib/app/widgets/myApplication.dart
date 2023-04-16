@@ -7,10 +7,9 @@ import 'package:todolist/app/const/icons.dart';
 import 'package:todolist/app/pages/addToDo.dart';
 import 'package:todolist/app/pages/checkIn.dart';
 import 'package:todolist/app/pages/home.dart';
-import 'package:todolist/app/pages/drawer.dart';
-import 'package:todolist/app/pages/viewYear.dart';
 
 import 'package:todolist/app/pages/progress.dart';
+import 'package:todolist/app/widgets/drawer.dart';
 import 'package:todolist/controller/homeController.dart';
 import 'package:todolist/model/task.dart';
 

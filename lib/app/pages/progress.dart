@@ -99,24 +99,25 @@ class MyProgress extends StatelessWidget {
             child: CircularPercentIndicator(
                 radius: 150.0,
                 lineWidth: 20.0,
+
                 // animateFromLastPercent: true,
                 // restartAnimation: true,
                 animation: true,
                 animationDuration: 500,
                 percent: completedTasks / createdTasks,
                 circularStrokeCap: CircularStrokeCap.butt,
-                // backgroundColor: Color(0xffe2ebf0),
+                backgroundColor: Color(0xffe2ebf0),
                 linearGradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
                   colors: Theme.of(context).brightness == Brightness.dark
                       ? [
                           Color(0xff13547a),
                           Color(0xff80d0c7),
                         ]
                       : [
-                          Color(0xff84fab0),
-                          Color(0xff8fd3f4),
+                          Color(0xfff83600),
+                          Color(0xfffda085),
                         ],
                 ),
                 center: GestureDetector(

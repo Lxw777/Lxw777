@@ -52,6 +52,11 @@ dependencies:
   percent_indicator: ^4.0.1
   flutter_heatmap_calendar: ^1.0.5
   rive: ^0.10.1
+  dio: ^5.1.1
+  dio_cookie_manager: ^2.0.0
+  cookie_jar: ^3.0.1
+
+
 
 flutter_native_splash:
   color: "#673AB7"

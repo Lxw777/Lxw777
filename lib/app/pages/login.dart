@@ -1,10 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:rive/rive.dart';
 import 'package:todolist/app/const/colors.dart';
 import 'package:todolist/app/widgets/gradientButton.dart';
+import 'package:todolist/app/widgets/myApplication.dart';
+import 'package:todolist/dio/DioUtil.dart';
+import 'package:todolist/util/loadingUtil.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -19,6 +23,8 @@ class _LoginPageState extends State<LoginPage> {
     Color color = Theme.of(context).brightness == Brightness.dark
         ? darkcolor
         : lightcolor;
+    TextEditingController userController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
     return Scaffold(
       body: Stack(
         children: [
@@ -48,16 +54,17 @@ class _LoginPageState extends State<LoginPage> {
           Positioned(
             right: 0,
             left: 0,
-            bottom: 50,
+            bottom: 100,
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 8.0, bottom: 70),
+                  padding: const EdgeInsets.only(left: 8.0, bottom: 170),
                   child: Text(
                     "Keep & \tGoing On",
                     style: TextStyle(
                       fontSize: 60,
                       fontWeight: FontWeight.w700,
+                      color: color,
                       fontFamily: "MiSans",
                       height: 1.2,
                     ),
@@ -70,6 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                     children: <Widget>[
                       SizedBox(height: 24.0),
                       TextFormField(
+                        controller: userController,
                         decoration: InputDecoration(
                           labelText: '账号',
                           border: OutlineInputBorder(
@@ -78,6 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: 16.0),
                       TextFormField(
+                        controller: passwordController,
                         decoration: InputDecoration(
                           labelText: '密码',
                           border: OutlineInputBorder(
@@ -89,9 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                       Align(
                         alignment: Alignment.centerRight,
                         child: GestureDetector(
-                          onTap: () {
-                            // TODO: 处理修改密码点击事件
-                          },
+                          onTap: () async {},
                           child: Text(
                             '修改密码',
                             style: TextStyle(
@@ -103,7 +110,23 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(height: 16.0),
                       GradientButton(
                         child: Text('登录'),
-                        tapCallback: (() {}),
+                        tapCallback: () async {
+                          print(1);
+                          // HubUtil.show(msg: "登录中", dismissOnTap: false);
+                          Map<String, String> params = {
+                            "phoneNum": "${userController.text}",
+                            "password": "${passwordController.text}"
+                          };
+
+                          var result = await DioUtil().request('login/login',
+                              params: params, method: DioMethod.post);
+                          // print(result.runtimeType);
+                          // print(result);
+
+                          // if (result["msg"] == "") Get.to(MyApplication());
+                          // HubUtil.dismiss;
+                          print(result);
+                        },
                         borderRadius: BorderRadius.circular(10),
                         colors: [color.withOpacity(0.5), color],
                       )

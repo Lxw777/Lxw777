@@ -35,17 +35,22 @@ class _UserInfoDetailState extends State<UserInfoDetail> {
     TextEditingController textId = TextEditingController();
     TextEditingController textUid = TextEditingController();
 
+    final themeColor = themecolor(context);
+
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: themeColor,
+        ),
         actions: [
           TextButton.icon(
             icon: Icon(
               Icons.check,
-              color: white,
             ),
             label: Text(
               "保存",
-              style: TextStyle(color: white),
+              style: TextStyle(color: themeColor, fontSize: 20),
             ),
             onPressed: () {
               Provider.of<UserInfoProvider>(context, listen: false)
@@ -96,26 +101,39 @@ class _UserInfoDetailState extends State<UserInfoDetail> {
     );
   }
 
-  _bulidInfo(String lable, String content, TextEditingController controller) {
+  _bulidInfo(String lable, String content, TextEditingController controller,
+      {Color? color}) {
     return Card(
         child: Padding(
       padding: EdgeInsets.all(6),
       child: Column(
         children: [
-          Text(
-            lable,
-            style: mytheme.headline2,
-          ),
+          // Text(
+          //   lable,
+          //   style: mytheme.headline2,
+          // ),
           Padding(
             padding: const EdgeInsets.only(left: 8, right: 8, top: 3),
-            child: TextField(
-              autofocus: false,
+            child: TextFormField(
               controller: controller,
               decoration: InputDecoration(
-                  hintText: content, hintTextDirection: TextDirection.rtl),
-              //设置最大行数
-              maxLines: 1,
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+                hintTextDirection: TextDirection.rtl,
+                labelText: lable,
+                hintText: content,
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+              obscureText: false,
             ),
+            // TextField(
+            //   autofocus: false,
+            //   controller: controller,
+            //   decoration: InputDecoration(
+            //       hintText: content, hintTextDirection: TextDirection.rtl),
+            //   //设置最大行数
+            //   maxLines: 1,
+            // ),
           ),
         ],
         crossAxisAlignment: CrossAxisAlignment.stretch,
