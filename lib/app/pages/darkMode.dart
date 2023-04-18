@@ -16,39 +16,90 @@ class DarkModePage extends StatefulWidget {
 class _DarkModePageState extends State<DarkModePage> {
   @override
   Widget build(BuildContext context) {
+    int selected =
+        Provider.of<DarkThemeProvider>(context, listen: false).themeMode;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: themecolor(context)),
       ),
       body: Container(
         child: Column(children: [
-          ListTile(
-            title: InkWell(
-              onTap: () {
-                Provider.of<DarkThemeProvider>(context, listen: false)
-                    .pressFollow();
-              },
-              child: Text("深色模式", style: mytheme.headline2),
+          // TextButton(
+          //     onPressed: () {
+          //       Provider.of<DarkThemeProvider>(context, listen: false)
+          //           .writeMode(1);
+          //     },
+          //     child: Text("12")),
+          Container(
+            color: 0 == selected ? themecolor(context) : null,
+            child: ListTile(
+              title: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selected = 0;
+                    Provider.of<DarkThemeProvider>(context, listen: false)
+                        .writeMode(0);
+                  });
+                },
+                child: Text("跟随系统", style: mytheme.headline2),
+              ),
+              leading: Icon(Icons.abc),
             ),
-            leading: Theme.of(context).brightness == Brightness.light
-                ? Icon(Icons.brightness_5)
-                : Icon(Icons.brightness_2),
-            trailing: Provider.of<DarkThemeProvider>(
-              context,
-            ).followSystem
-                ? Text("跟随系统")
-                : CupertinoSwitch(
-                    value:
-                        Provider.of<DarkThemeProvider>(context, listen: false)
-                            .isDark,
-                    onChanged: (value) {
-                      Provider.of<DarkThemeProvider>(context, listen: false)
-                          .switchTheme(value);
-                    }),
+          ),
+          Container(
+            color: 1 == selected ? themecolor(context) : null,
+            child: ListTile(
+              title: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selected = 1;
+                    Provider.of<DarkThemeProvider>(context, listen: false)
+                        .writeMode(1);
+                  });
+                },
+                child: Text("浅色模式", style: mytheme.headline2),
+              ),
+              leading: Icon(Icons.abc),
+            ),
+          ),
+          Container(
+            color: 2 == selected ? themecolor(context) : null,
+            child: ListTile(
+              title: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selected = 2;
+                    Provider.of<DarkThemeProvider>(context, listen: false)
+                        .writeMode(2);
+                  });
+                },
+                child: Text("深色模式", style: mytheme.headline2),
+              ),
+              leading: Icon(Icons.abc),
+            ),
           ),
         ]),
       ),
     );
   }
+}
+
+Widget themeList(int index, String mode, Icon icon, BuildContext context) {
+  int selected =
+      Provider.of<DarkThemeProvider>(context, listen: false).themeMode;
+  return Container(
+    color: index == selected ? themecolor(context) : null,
+    child: ListTile(
+      title: GestureDetector(
+        onTap: () {
+          selected = index;
+          Provider.of<DarkThemeProvider>(context, listen: false)
+              .writeMode(index);
+        },
+        child: Text(mode, style: mytheme.headline2),
+      ),
+      leading: icon,
+    ),
+  );
 }

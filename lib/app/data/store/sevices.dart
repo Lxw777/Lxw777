@@ -15,23 +15,28 @@ class StoreService extends GetxService {
     _store.listen(() {
       print(_store.read(key));
     });
-    print("Function Readddddddd");
     return _store.read(key);
   }
 
-  void write(String key, List<dynamic> value) async {
+  // void write(String key, List<dynamic> value) async {
+  //   await _store.write(key, value);
+  //   _store.listen(() {
+  //     print(_store.read(key));
+  //   });
+  // }
+
+  void writeList(String key, List<dynamic> value) async {
     await _store.write(key, value);
     _store.listen(() {
       print(_store.read(key));
     });
-    print("Function writeeeee");
   }
 
-  void writebool(String key, bool value) async {
+  void write(String key, dynamic value) async {
     await _store.write(key, value);
   }
 
-  void writeUserInfo(String key, dynamic s) async {
-    await _store.write(key, s);
-  }
+  // void writeUserInfo(String key, dynamic s) async {
+  //   await _store.write(key, s);
+  // }
 }

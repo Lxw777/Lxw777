@@ -1,29 +1,34 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import 'package:rive/rive.dart';
 import 'package:todolist/app/const/colors.dart';
-import 'package:todolist/app/pages/chagePassword.dart';
-import 'package:todolist/app/pages/registerPage.dart';
+
 import 'package:todolist/app/widgets/gradientButton.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+import 'package:todolist/dio/DioUtil.dart';
+
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   TextEditingController userController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
+  TextEditingController nameController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
   @override
   void dispose() {
+    // ignore: todo
+    // TODO: implement dispose
     userController.dispose();
     passwordController.dispose();
+    nameController.dispose();
+    confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -34,6 +39,10 @@ class _LoginPageState extends State<LoginPage> {
         : lightcolor;
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text("注册账号"),
+        centerTitle: true,
+      ),
       body: Stack(
         children: [
           Positioned(
@@ -62,22 +71,11 @@ class _LoginPageState extends State<LoginPage> {
           Positioned(
             right: 0,
             left: 0,
-            bottom: 100,
+            top: 70,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0, bottom: 170),
-                  child: Text(
-                    "Keep & \tGoing On",
-                    style: TextStyle(
-                      fontSize: 60,
-                      fontWeight: FontWeight.w700,
-                      color: color,
-                      fontFamily: "MiSans",
-                      height: 1.2,
-                    ),
-                  ),
-                ),
                 Container(
                   padding: EdgeInsets.all(10.0),
                   child: Column(
@@ -86,80 +84,64 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(height: 24.0),
                       TextFormField(
                         autofocus: false,
-                        controller: userController,
+                        controller: nameController,
                         decoration: InputDecoration(
-                          labelText: '账号',
+                          labelText: '用户名',
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10)),
                         ),
                       ),
                       SizedBox(height: 16.0),
-
+                      TextFormField(
+                        controller: userController,
+                        // keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: '手机号',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                      ),
+                      SizedBox(height: 16.0),
                       TextFormField(
                         controller: passwordController,
                         decoration: InputDecoration(
                           labelText: '密码',
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
                         obscureText: true,
                       ),
                       SizedBox(height: 16.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                            onTap: () => Get.to(RegisterPage()),
-                            child: Text(
-                              '注册账号',
-                              style: TextStyle(
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () => Get.to(ChangePassWordPage()),
-                            child: Text(
-                              '修改密码',
-                              style: TextStyle(
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
-                        ],
+                      TextFormField(
+                        controller: confirmPasswordController,
+                        decoration: InputDecoration(
+                          labelText: '确认密码',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                        obscureText: true,
                       ),
-                      // Align(
-                      //   alignment: Alignment.centerRight,
-                      //   child: GestureDetector(
-                      //     onTap: () => Get.to(ChangePassWordPage()),
-                      //     child: Text(
-                      //       '修改密码',
-                      //       style: TextStyle(
-                      //         color: Colors.grey,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+                      SizedBox(height: 25.0),
                       SizedBox(height: 16.0),
                       GradientButton(
                         child: Text('登录'),
                         tapCallback: () async {
                           print(1);
                           // HubUtil.show(msg: "登录中", dismissOnTap: false);
-                          // print(userController.text + passwordController.text);
-                          // Map<String, String> params = {
-                          //   "phoneNum": "${userController.text}",
-                          //   "password": "${passwordController.text}"
-                          // };
+                          Map<String, String> params = {
+                            "phoneNum": "${userController.text}",
+                            "password": "${passwordController.text}"
+                          };
 
-                          // var result = await DioUtil().request('login/login',
-                          //     params: params, method: DioMethod.post);
-                          // print(result.runtimeType);
-                          // print(result);
+                          var result = await DioUtil().request('login/login',
+                              params: params, method: DioMethod.post);
+                          print(result.runtimeType);
+                          print(result);
 
                           // if (result["msg"] == "") Get.to(MyApplication());
                           // HubUtil.dismiss;
-                          // print(result);
+                          print(result);
                         },
                         borderRadius: BorderRadius.circular(10),
                         colors: [color.withOpacity(0.5), color],

@@ -59,7 +59,11 @@ class CheckIn extends StatelessWidget {
             ),
             // 标签页所对应的页面
             body: TabBarView(
-              children: <Widget>[DayView(), MonthView(), YearView()],
+              children: <Widget>[
+                DayView(),
+                MonthView(),
+                YearView(),
+              ],
             )));
   }
 }

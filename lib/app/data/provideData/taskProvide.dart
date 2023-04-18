@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:todolist/app/constValue/store_key.dart';
 import 'package:todolist/app/data/store/sevices.dart';
 import 'package:todolist/model/task.dart';
 
@@ -10,8 +11,9 @@ class TaskProvider {
 
   List<Task> readTasks() {
     var tasks = <Task>[];
-    dynamic temp = jsonDecode(_store.read("tasks").toString());
-    print("before Provider = ${jsonDecode(_store.read("tasks").toString())}");
+    dynamic temp = jsonDecode(_store.read(StoreConst.Tasks).toString());
+    print(
+        "before Provider = ${jsonDecode(_store.read(StoreConst.Tasks).toString())}");
     for (var e in temp) {
       tasks.add(Task.fromjson(e));
     }
@@ -25,6 +27,6 @@ class TaskProvider {
       temp.add(jsonEncode(e.tojson(e)));
     }
 
-    _store.write("tasks", temp);
+    _store.writeList(StoreConst.Tasks, temp);
   }
 }

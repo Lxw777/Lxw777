@@ -1,22 +1,16 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:todolist/app/constValue/store_key.dart';
 import 'package:todolist/app/data/store/sevices.dart';
 import 'package:todolist/model/userInfo.dart';
 
 //信息管理
 class UserInfoProvider extends ChangeNotifier {
   final _store = Get.find<StoreService>();
-  // late UserInfo _userInfo;
-  // UserInfo get userInfo => _userInfo;
-
-  // UserInfoProvider() {
-  //   _userInfo = readUserInfo();
-  // }
-
   UserInfo readUserInfo() {
-    UserInfo user = _store.read("user") != null
-        ? UserInfo.fromJson(jsonDecode(_store.read("user")))
+    UserInfo user = _store.read(StoreConst.User) != null
+        ? UserInfo.fromJson(jsonDecode(_store.read(StoreConst.User)))
         : UserInfo(
             avatar: "",
             id: "未登录",
@@ -29,7 +23,7 @@ class UserInfoProvider extends ChangeNotifier {
 
   void writeUser(UserInfo userInfo) {
     var temp = jsonEncode(userInfo.toJson());
-    _store.writeUserInfo("user", temp);
+    _store.write(StoreConst.User, temp);
     print("写入信息");
     notifyListeners();
   }

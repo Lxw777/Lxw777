@@ -35,8 +35,9 @@ class MyApp extends StatelessWidget {
       ],
       child: Consumer<DarkThemeProvider>(
         builder: (context, value, child) => GetMaterialApp(
-          theme: value.followSystem ? value.lightTheme : value.themedata,
-          darkTheme: value.followSystem ? value.darkTheme : null,
+          theme: value.lightTheme,
+          darkTheme: value.darkTheme,
+          themeMode: value.readMode(),
           debugShowCheckedModeBanner: false,
           initialBinding: HomeBinding(),
           builder: EasyLoading.init(),

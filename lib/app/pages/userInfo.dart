@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:todolist/app/const/colors.dart';
-import 'package:todolist/app/const/theme.dart';
 import 'package:todolist/app/data/provideData/userInfoProvider.dart';
+import 'package:todolist/app/widgets/gradientButton.dart';
 import 'package:todolist/model/userInfo.dart';
 
 class UserInfoDetail extends StatefulWidget {
@@ -34,14 +34,15 @@ class _UserInfoDetailState extends State<UserInfoDetail> {
 
     TextEditingController textId = TextEditingController();
     TextEditingController textUid = TextEditingController();
-
-    final themeColor = themecolor(context);
+    Color color = Theme.of(context).brightness == Brightness.dark
+        ? darkcolor
+        : lightcolor;
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         iconTheme: IconThemeData(
-          color: themeColor,
+          color: color,
         ),
         actions: [
           TextButton.icon(
@@ -50,16 +51,23 @@ class _UserInfoDetailState extends State<UserInfoDetail> {
             ),
             label: Text(
               "保存",
-              style: TextStyle(color: themeColor, fontSize: 20),
+              style: TextStyle(color: color, fontSize: 20),
             ),
             onPressed: () {
-              Provider.of<UserInfoProvider>(context, listen: false)
-                  .writeUser(UserInfo(
-                avatar: _userImage!.path,
-                id: textId.text.isEmpty ? user.id : textId.text,
-                uid: textUid.text.isEmpty ? user.uid : textUid.text,
-                password: user.password,
-              ));
+              Provider.of<UserInfoProvider>(context, listen: false).writeUser(
+                UserInfo(
+                  avatar: _userImage?.path ?? user.avatar,
+                  id: textId.text.isEmpty ? user.id : textId.text,
+                  uid: textUid.text.isEmpty ? user.uid : textUid.text,
+                  password: user.password,
+                ),
+                //     UserInfo(
+                //   avatar: "",
+                //   id: "未登录12",
+                //   uid: "000",
+                //   password: "000000",
+                // ),
+              );
             },
           ),
         ],
@@ -95,6 +103,15 @@ class _UserInfoDetailState extends State<UserInfoDetail> {
           ),
           _bulidInfo("用户名", user.id!, textId),
           _bulidInfo("账号", user.uid!, textUid),
+          Container(
+            padding: EdgeInsets.only(top: 10, left: 15, right: 15),
+            child: GradientButton(
+              child: Text('退出登录'),
+              tapCallback: () async {},
+              borderRadius: BorderRadius.circular(10),
+              colors: [color.withOpacity(0.5), color],
+            ),
+          )
           // _bulidInfo(, content)
         ],
       ),
@@ -103,18 +120,13 @@ class _UserInfoDetailState extends State<UserInfoDetail> {
 
   _bulidInfo(String lable, String content, TextEditingController controller,
       {Color? color}) {
-    return Card(
-        child: Padding(
+    return Padding(
       padding: EdgeInsets.all(6),
       child: Column(
         children: [
-          // Text(
-          //   lable,
-          //   style: mytheme.headline2,
-          // ),
           Padding(
             padding: const EdgeInsets.only(left: 8, right: 8, top: 3),
-            child: TextFormField(
+            child: TextField(
               controller: controller,
               decoration: InputDecoration(
                 floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -138,7 +150,7 @@ class _UserInfoDetailState extends State<UserInfoDetail> {
         ],
         crossAxisAlignment: CrossAxisAlignment.stretch,
       ),
-    ));
+    );
   }
 
   Future _getCameraImage() async {

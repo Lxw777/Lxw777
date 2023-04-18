@@ -2,39 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todolist/app/const/colors.dart';
 import 'package:todolist/app/const/theme.dart';
+import 'package:todolist/app/constValue/store_key.dart';
 import 'package:todolist/app/data/store/sevices.dart';
 
 //深色模式状态
 class DarkThemeProvider extends ChangeNotifier {
   final _store = Get.find<StoreService>();
 
-  bool _isDark = false;
-  bool get isDark => _isDark;
-  bool _followSystem = true;
-  bool get followSystem => _followSystem;
-
-  late ThemeData _themeData;
-  ThemeData get themedata => _themeData;
-
-  bool readDark() {
-    var isdark = _store.read("dark");
-    return isdark ?? false;
+  int _themeMode = 0;
+  int get themeMode => _themeMode;
+  DarkThemeProvider() {
+    _themeMode = _store.read(StoreConst.ThemeMode) ?? 0;
+    notifyListeners();
   }
 
-  void writeDark(bool isdark) {
-    _store.writebool("dark", isdark);
+  ThemeMode readMode() {
+    int _themeMode = _store.read(StoreConst.ThemeMode) ?? 0;
+    if (_themeMode == 0)
+      return ThemeMode.system;
+    else if (_themeMode == 1)
+      return ThemeMode.light;
+    else
+      return ThemeMode.dark;
   }
 
-  bool readFollow() {
-    var isFollow = _store.read("follow");
-    return isFollow ?? true;
+  void writeMode(int mode) {
+    _themeMode = mode;
+    _store.write(StoreConst.ThemeMode, _themeMode);
+
+    notifyListeners();
   }
 
-  void writeFollow(bool isFollow) {
-    _store.writebool("follow", isFollow);
-  }
-
-  ThemeData lightTheme = ThemeData(
+  final lightTheme = ThemeData(
       brightness: Brightness.light,
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
@@ -43,12 +42,16 @@ class DarkThemeProvider extends ChangeNotifier {
         ),
         elevation: 10,
       )),
+      appBarTheme: AppBarTheme(
+          titleTextStyle: TextStyle(color: lightcolor, fontSize: 20),
+          color: Colors.white,
+          iconTheme: IconThemeData(color: lightcolor)),
       colorScheme: ColorScheme.light().copyWith(primary: lightcolor),
       primaryColor: lightcolor,
 
       // ignore: prefer_const_constructors
       textTheme: mytheme);
-  ThemeData darkTheme = ThemeData(
+  final darkTheme = ThemeData(
       brightness: Brightness.dark,
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
@@ -62,24 +65,4 @@ class DarkThemeProvider extends ChangeNotifier {
 
       // ignore: prefer_const_constructors
       textTheme: mytheme);
-
-  //初始化
-  DarkThemeProvider() {
-    _isDark = readDark();
-    _followSystem = readFollow();
-    _themeData = readDark() ? darkTheme : lightTheme;
-    notifyListeners();
-  }
-  void switchTheme(bool isDark) {
-    _isDark = isDark;
-    writeDark(isDark);
-    _themeData = isDark ? darkTheme : lightTheme;
-    notifyListeners();
-  }
-
-  void pressFollow() {
-    _followSystem = !_followSystem;
-    writeFollow(_followSystem);
-    notifyListeners();
-  }
 }

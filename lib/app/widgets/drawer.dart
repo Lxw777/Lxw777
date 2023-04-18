@@ -103,15 +103,9 @@ class MyDrawer extends StatelessWidget {
                     title: Text('设置日程', style: mytheme.headline2),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.add),
-                    title: Text('ARKNIGHT', style: mytheme.headline2),
-                  ),
-                  ListTile(
                     title: InkWell(
                       onTap: () {
                         Get.to(DarkModePage());
-                        // Provider.of<DarkThemeProvider>(context, listen: false)
-                        //     .pressFollow();
                       },
                       child: Text("深色模式", style: mytheme.headline2),
                     ),
