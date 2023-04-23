@@ -1,13 +1,20 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 import 'package:rive/rive.dart';
 import 'package:todolist/app/const/colors.dart';
+import 'package:todolist/app/constValue/store_key.dart';
 import 'package:todolist/app/pages/chagePassword.dart';
 import 'package:todolist/app/pages/registerPage.dart';
 import 'package:todolist/app/widgets/gradientButton.dart';
+import 'package:todolist/app/widgets/myApplication.dart';
+import 'package:todolist/dio/DioUtil.dart';
+import 'package:todolist/util/loadingUtil.dart';
+
+import '../../main.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -145,20 +152,28 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text('登录'),
                         tapCallback: () async {
                           print(1);
-                          // HubUtil.show(msg: "登录中", dismissOnTap: false);
-                          // print(userController.text + passwordController.text);
-                          // Map<String, String> params = {
-                          //   "phoneNum": "${userController.text}",
-                          //   "password": "${passwordController.text}"
-                          // };
+                          HubUtil.show(msg: "登录中");
+                          print(userController.text + passwordController.text);
+                          Map<String, String> params = {
+                            "phoneNum": "${userController.text}",
+                            "password": "${passwordController.text}"
+                          };
 
-                          // var result = await DioUtil().request('login/login',
-                          //     params: params, method: DioMethod.post);
-                          // print(result.runtimeType);
-                          // print(result);
+                          var result = await DioUtil().request('login/login',
+                              params: params, method: DioMethod.post);
+                          print(result.runtimeType);
+                          print(result);
 
-                          // if (result["msg"] == "") Get.to(MyApplication());
-                          // HubUtil.dismiss;
+                          if (result["msg"] == "成功") {
+                            HubUtil.dismiss();
+                            preferences!.setBool(StoreConst.Login, true);
+                            Get.to(MyApplication());
+                            HubUtil.showSuccess();
+                          } else {
+                            HubUtil.dismiss();
+                            HubUtil.showError(msg: '登录失败');
+                          }
+
                           // print(result);
                         },
                         borderRadius: BorderRadius.circular(10),

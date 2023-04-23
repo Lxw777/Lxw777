@@ -1,4 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:get/get_instance/get_instance.dart';
+import 'package:get/utils.dart';
+
+import '../app/constValue/store_key.dart';
+import '../app/data/store/sevices.dart';
 
 /// 请求方法
 enum DioMethod {
@@ -34,41 +39,41 @@ class DioUtil {
 
     _dio = Dio(options);
 
-    // _dio.interceptors.add(InterceptorsWrapper(
-    //     onRequest: _onRequest, onResponse: _onResponse, onError: _onError));
+    _dio.interceptors.add(InterceptorsWrapper(
+        onRequest: _onRequest, onResponse: _onResponse, onError: _onError));
   }
 
-  // void _onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-  //   // 对非open的接口的请求参数全部增加userId
-  //   if (!options.path.contains("open")) {
-  //     options.queryParameters["userId"] = "xxx";
-  //   }
-  //   // 头部添加token
-  //   options.headers["token"] = "xxx";
-  //   // 更多业务需求
-  //   handler.next(options);
-  //   // super.onRequest(options, handler);
-  // }
+  void _onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    // 对非open的接口的请求参数全部增加userId
+    if (!options.path.contains("open")) {
+      options.queryParameters["userId"] = "xxx";
+    }
+    // 头部添加token
+    options.headers["token"] = Get.find<StoreService>().read(StoreConst.Token);
+    // 更多业务需求
+    handler.next(options);
+    // super.onRequest(options, handler);
+  }
 
-  // / 相应拦截器
-  // void _onResponse(
-  //     Response response, ResponseInterceptorHandler handler) async {
-  //   // 请求成功是对数据做基本处理
-  //   if (response.statusCode == 200) {
-  //     // ....
-  //   } else {
-  //     // ....
-  //   }
-  //   if (response.requestOptions.baseUrl.contains("???????")) {
-  //     // 对某些单独的url返回数据做特殊处理
-  //   }
-  //   handler.next(response);
-  // }
+  // 相应拦截器
+  void _onResponse(
+      Response response, ResponseInterceptorHandler handler) async {
+    // 请求成功是对数据做基本处理
+    if (response.statusCode == 200) {
+      // ....
+    } else {
+      // ....
+    }
+    if (response.requestOptions.baseUrl.contains("???????")) {
+      // 对某些单独的url返回数据做特殊处理
+    }
+    handler.next(response);
+  }
 
-  // /// 错误处理
-  // void _onError(DioError error, ErrorInterceptorHandler handler) {
-  //   handler.next(error);
-  // }
+  /// 错误处理
+  void _onError(DioError error, ErrorInterceptorHandler handler) {
+    handler.next(error);
+  }
 
   /// 请求类
   Future<T> request<T>(

@@ -4,10 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:rive/rive.dart';
 import 'package:todolist/app/const/colors.dart';
+import 'package:todolist/app/constValue/store_key.dart';
 import 'package:todolist/app/data/provideData/userInfoProvider.dart';
+import 'package:todolist/app/pages/login.dart';
 import 'package:todolist/app/widgets/gradientButton.dart';
 import 'package:todolist/model/userInfo.dart';
+
+import '../../main.dart';
 
 class UserInfoDetail extends StatefulWidget {
   const UserInfoDetail({super.key});
@@ -17,21 +22,14 @@ class UserInfoDetail extends StatefulWidget {
 }
 
 class _UserInfoDetailState extends State<UserInfoDetail> {
-  //实例化选择图片
   final ImagePicker picker = new ImagePicker();
-  //调用相机拍照
 
-//用户本地图片
-  File? _userImage; //存放获取到的本地路径
-//异步吊起相机拍摄新照片方法
+  File? _userImage;
+  bool login = preferences!.getBool(StoreConst.Login) ?? false;
 
   @override
   Widget build(BuildContext context) {
-    // ignore: unused_local_variable
     UserInfo user = Provider.of<UserInfoProvider>(context).readUserInfo();
-    // String path = user.avatar!;
-    // _userImage = File(user.avatar ?? '');
-
     TextEditingController textId = TextEditingController();
     TextEditingController textUid = TextEditingController();
     Color color = Theme.of(context).brightness == Brightness.dark
@@ -101,13 +99,26 @@ class _UserInfoDetailState extends State<UserInfoDetail> {
               ),
             ),
           ),
-          _bulidInfo("用户名", user.id!, textId),
-          _bulidInfo("账号", user.uid!, textUid),
+          _bulidInfo("用户名", user.id!, controller: textId, enable: true),
+          _bulidInfo("账号", user.uid!, enable: false),
+
           Container(
             padding: EdgeInsets.only(top: 10, left: 15, right: 15),
             child: GradientButton(
-              child: Text('退出登录'),
-              tapCallback: () async {},
+              child: Text(login ? '退出登录' : "登录"),
+              tapCallback: () async {
+                if (login) {
+                  setState(() {
+                    preferences!.setBool(StoreConst.Login, false);
+                    Provider.of<UserInfoProvider>(context, listen: false)
+                        .logout();
+                  });
+                  // Provider.of<UserInfoProvider>(context).logout();
+                } else {
+                  Get.to(LoginPage());
+                }
+                ;
+              },
               borderRadius: BorderRadius.circular(10),
               colors: [color.withOpacity(0.5), color],
             ),
@@ -118,8 +129,10 @@ class _UserInfoDetailState extends State<UserInfoDetail> {
     );
   }
 
-  _bulidInfo(String lable, String content, TextEditingController controller,
-      {Color? color}) {
+  _bulidInfo(String lable, String content,
+      {TextEditingController? controller,
+      // {Color? color}
+      bool? enable}) {
     return Padding(
       padding: EdgeInsets.all(6),
       child: Column(
@@ -127,6 +140,7 @@ class _UserInfoDetailState extends State<UserInfoDetail> {
           Padding(
             padding: const EdgeInsets.only(left: 8, right: 8, top: 3),
             child: TextField(
+              enabled: enable,
               controller: controller,
               decoration: InputDecoration(
                 floatingLabelBehavior: FloatingLabelBehavior.always,

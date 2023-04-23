@@ -20,17 +20,12 @@ class _DarkModePageState extends State<DarkModePage> {
         Provider.of<DarkThemeProvider>(context, listen: false).themeMode;
     return Scaffold(
       appBar: AppBar(
-        // backgroundColor: Colors.white,
+        title: Text("主题选择"),
+        centerTitle: true,
         iconTheme: IconThemeData(color: themecolor(context)),
       ),
       body: Container(
         child: Column(children: [
-          // TextButton(
-          //     onPressed: () {
-          //       Provider.of<DarkThemeProvider>(context, listen: false)
-          //           .writeMode(1);
-          //     },
-          //     child: Text("12")),
           Container(
             color: 0 == selected ? themecolor(context) : null,
             child: ListTile(

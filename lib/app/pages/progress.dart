@@ -7,6 +7,11 @@ import 'package:intl/intl.dart';
 import 'package:todolist/app/const/colors.dart';
 import 'package:todolist/app/const/extensions.dart';
 import 'package:todolist/app/const/theme.dart';
+import 'package:todolist/app/pages/viewMonth.dart';
+import 'package:todolist/app/pages/viewYear.dart';
+import 'package:todolist/app/widgets/check.dart';
+import 'package:todolist/app/widgets/indicator.dart';
+import 'package:todolist/app/widgets/panel.dart';
 import 'package:todolist/controller/homeController.dart';
 
 class MyProgress extends StatelessWidget {
@@ -94,96 +99,10 @@ class MyProgress extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 15.0.wp),
-          UnconstrainedBox(
-            child: CircularPercentIndicator(
-                radius: 150.0,
-                lineWidth: 20.0,
-
-                // animateFromLastPercent: true,
-                // restartAnimation: true,
-                animation: true,
-                animationDuration: 500,
-                percent: completedTasks / createdTasks,
-                circularStrokeCap: CircularStrokeCap.butt,
-                backgroundColor: Color(0xffe2ebf0),
-                linearGradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: Theme.of(context).brightness == Brightness.dark
-                      ? [
-                          Color(0xff13547a),
-                          Color(0xff80d0c7),
-                        ]
-                      : [
-                          Color(0xfff83600),
-                          Color(0xfffda085),
-                        ],
-                ),
-                center: GestureDetector(
-                  onTap: () {
-                    EasyLoading.showSuccess('您昨日的效率已经超越99%用户');
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${createdTasks == 0 ? 0 : precent} %',
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
-                      SizedBox(
-                        height: 1.0.wp,
-                      ),
-                      Text(
-                        "Efficiency",
-                        style: TextStyle(
-                            fontSize: 17,
-                            fontFamily: "NoveCentoWide",
-                            color: themecolor(context),
-                            fontWeight: FontWeight.w700),
-                      )
-                    ],
-                  ),
-                )
-                //   CircularStepProgressIndicator(
-                // // customColor: customcolor,
-                // totalSteps: (createdTasks == 0 ? 1 : createdTasks),
-                // currentStep: completedTasks,
-                // stepSize: 20,
-                // selectedColor: lightcolor,
-                // unselectedColor: Colors.grey[200],
-                // padding: 0,
-                // width: 150,
-                // height: 150,
-                // selectedStepSize: 24,
-                // roundedCap: (_, __) => true,
-                // child: GestureDetector(
-                //   onTap: () {
-                //     EasyLoading.showSuccess('您昨日的效率已经超越99%用户');
-                //   },
-                //   child: Column(
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     children: [
-                //       Text(
-                //         '${createdTasks == 0 ? 0 : precent} %',
-                //         style: Theme.of(context).textTheme.headline4,
-                //       ),
-                //       SizedBox(
-                //         height: 1.0.wp,
-                //       ),
-                //       Text(
-                //         "Efficiency",
-                //         style: TextStyle(
-                //             fontSize: 17,
-                //             fontFamily: "NoveCentoWide",
-                //             color: themecolor(context),
-                //             fontWeight: FontWeight.w700),
-                //       )
-                //     ],
-                //   ),
-                // ),
-                // ),
-                ),
+          // SizedBox(height: 15.0.wp),
+          SwitchPanel(
+            widgets: [Indicator(), MonthView(), YearView()],
+            title: ['打卡', '月视图', '年视图'],
           )
         ],
       );

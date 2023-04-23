@@ -11,6 +11,7 @@ class DarkThemeProvider extends ChangeNotifier {
 
   int _themeMode = 0;
   int get themeMode => _themeMode;
+
   DarkThemeProvider() {
     _themeMode = _store.read(StoreConst.ThemeMode) ?? 0;
     notifyListeners();

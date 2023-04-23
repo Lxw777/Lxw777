@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todolist/app/data/provideData/checkinProvider.dart';
 import 'package:todolist/app/data/provideData/darkThemeProvider.dart';
 import 'package:todolist/app/data/provideData/userInfoProvider.dart';
 import 'package:todolist/app/data/store/sevices.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(value: DarkThemeProvider()),
         ChangeNotifierProvider.value(value: UserInfoProvider()),
+        ChangeNotifierProvider.value(value: CheckInProvider()),
       ],
       child: Consumer<DarkThemeProvider>(
         builder: (context, value, child) => GetMaterialApp(

@@ -54,50 +54,45 @@ class MyApplication extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Padding(
-                padding: EdgeInsets.only(right: 10.0.wp),
-                child: IconButton(
-                    onPressed: () {
-                      control.changemypage(0);
-                    },
-                    icon: Icon(
-                      Icons.fact_check,
-                      // color: Colors.white,
-                      color: themecolor(context),
-                      size: 30,
-                    )),
-              ),
+              IconButton(
+                  onPressed: () {
+                    control.changemypage(0);
+                  },
+                  icon: Icon(
+                    Icons.fact_check,
+                    // color: Colors.white,
+                    color: themecolor(context),
+                    size: 30,
+                  )),
+
               // Padding(
               //   padding: EdgeInsets.only(right: 10.0.wp),
               //   child:
+              // IconButton(
+              //     onPressed: () {
+              //       control.changemypage(1);
+              //     },
+              //     icon: Icon(
+              //       MyFlutterApp.check, color: themecolor(context),
+              //       // color: Colors.white,
+              //       size: 23,
+              //     )),
+              // ),
               IconButton(
                   onPressed: () {
                     control.changemypage(1);
                   },
-                  icon: Icon(
-                    MyFlutterApp.check, color: themecolor(context),
-                    // color: Colors.white,
-                    size: 23,
-                  )),
-              // ),
-              Padding(
-                padding: EdgeInsets.only(left: 10.0.wp),
-                child: IconButton(
-                    onPressed: () {
-                      control.changemypage(2);
-                    },
-                    icon: Icon(Icons.donut_large_outlined,
-                        color: themecolor(context),
-                        // color: Colors.white,
-                        size: 30)),
-              ),
+                  icon: Icon(Icons.donut_large_outlined,
+                      color: themecolor(context),
+                      // color: Colors.white,
+                      size: 30)),
             ],
           )),
       body: PageView(
         controller: control.mypage,
         children: [
           Home(),
-          CheckIn(),
+          // CheckIn(),
           MyProgress(),
         ],
       ),

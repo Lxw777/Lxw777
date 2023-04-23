@@ -17,13 +17,23 @@ class ChangePassWordPage extends StatefulWidget {
 }
 
 class _ChangePassWordPageState extends State<ChangePassWordPage> {
+  TextEditingController userController = TextEditingController();
+  TextEditingController oldpasswordController = TextEditingController();
+  TextEditingController newpasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    userController.dispose();
+    oldpasswordController.dispose();
+    newpasswordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Color color = Theme.of(context).brightness == Brightness.dark
         ? darkcolor
         : lightcolor;
-    TextEditingController userController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
@@ -79,34 +89,44 @@ class _ChangePassWordPageState extends State<ChangePassWordPage> {
                       ),
                       SizedBox(height: 16.0),
                       TextFormField(
-                        controller: passwordController,
+                        controller: oldpasswordController,
                         decoration: InputDecoration(
-                          labelText: '密码',
+                          labelText: '旧密码',
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10)),
                         ),
                         obscureText: true,
                       ),
+                      SizedBox(height: 16.0),
+                      TextFormField(
+                        controller: oldpasswordController,
+                        decoration: InputDecoration(
+                          labelText: '新密码',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                        obscureText: false,
+                      ),
                       SizedBox(height: 25.0),
                       SizedBox(height: 16.0),
                       GradientButton(
-                        child: Text('登录'),
+                        child: Text('确认修改密码'),
                         tapCallback: () async {
-                          print(1);
-                          // HubUtil.show(msg: "登录中", dismissOnTap: false);
-                          Map<String, String> params = {
-                            "phoneNum": "${userController.text}",
-                            "password": "${passwordController.text}"
-                          };
+                          // print(1);
+                          // // HubUtil.show(msg: "登录中", dismissOnTap: false);
+                          // Map<String, String> params = {
+                          //   "phoneNum": "${userController.text}",
+                          //   "password": "${oldpasswordController.text}"
+                          // };
 
-                          var result = await DioUtil().request('login/login',
-                              params: params, method: DioMethod.post);
-                          print(result.runtimeType);
-                          print(result);
+                          // var result = await DioUtil().request('login/login',
+                          //     params: params, method: DioMethod.post);
+                          // print(result.runtimeType);
+                          // print(result);
 
-                          // if (result["msg"] == "") Get.to(MyApplication());
-                          // HubUtil.dismiss;
-                          print(result);
+                          // // if (result["msg"] == "") Get.to(MyApplication());
+                          // // HubUtil.dismiss;
+                          // print(result);
                         },
                         borderRadius: BorderRadius.circular(10),
                         colors: [color.withOpacity(0.5), color],

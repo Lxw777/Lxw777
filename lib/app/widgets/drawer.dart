@@ -1,16 +1,21 @@
+import 'dart:ffi';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:rive/rive.dart';
 import 'package:todolist/app/const/theme.dart';
+import 'package:todolist/app/data/provideData/checkinProvider.dart';
 import 'package:todolist/app/data/provideData/userInfoProvider.dart';
 import 'package:todolist/app/pages/darkMode.dart';
 import 'package:todolist/app/pages/intro.dart';
 import 'package:todolist/app/pages/userInfo.dart';
 import 'package:todolist/app/pages/login.dart';
 import 'package:todolist/app/pages/setting.dart';
+import 'package:todolist/app/widgets/panel.dart';
 
 import 'package:todolist/main.dart';
 import 'package:todolist/model/userInfo.dart';
@@ -74,22 +79,49 @@ class MyDrawer extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: <Widget>[
-                  ListTile(
-                    onTap: () => Get.to(LoginPage()),
-                    leading: const Icon(Icons.settings_outlined),
-                    title: Text(
-                      '登录页',
-                      style: mytheme.headline2,
-                    ),
-                  ),
+                  // ListTile(
+                  //   onTap: () => Get.to(LoginPage()),
+                  //   leading: const Icon(Icons.settings_outlined),
+                  //   title: Text(
+                  //     '测试：登录页',
+                  //     style: mytheme.headline2,
+                  //   ),
+                  // ),
+                  // ListTile(
+                  //   onTap: (() {
+                  //     Provider.of<CheckInProvider>(context, listen: false)
+                  //         .writeMap("000001101");
+                  //     print(DateTime.parse(
+                  //         DateTime.now().toString().replaceRange(8, 10, "01")));
+
+                  //     // int a = pow(2, 32).toInt();
+                  //     // print(DateTime.now().year.toString() +
+                  //     //     DateTime.now().month.toString());
+                  //     // print(a);
+                  //   }),
+                  //   leading: const Icon(Icons.settings_outlined),
+                  //   title: Text(
+                  //     '测试：登录页',
+                  //     style: mytheme.headline2,
+                  //   ),
+                  // ),
                   ListTile(
                     onTap: () => Get.to(SettingPage()),
                     leading: const Icon(Icons.settings_outlined),
                     title: Text('设置页面', style: mytheme.headline2),
                   ),
                   ListTile(
-                    onTap: () => EasyLoading.showSuccess(
-                      '功能发开中',
+                    onTap: () => Get.defaultDialog(
+                      title: "打卡成功",
+                      content: Container(
+                        height: 300,
+                        width: 300,
+                        color: Colors.transparent,
+                        child: RiveAnimation.asset(
+                          'assets/done.riv',
+                          animations: ["done"],
+                        ),
+                      ),
                     ),
                     leading: const Icon(Icons.done_all),
                     title: Text('每日打卡', style: mytheme.headline2),
@@ -116,10 +148,6 @@ class MyDrawer extends StatelessWidget {
                 ],
               ),
             ),
-            TextButton.icon(
-                onPressed: () {},
-                icon: Icon(Icons.disabled_by_default),
-                label: Text("退出登录"))
           ],
         ),
       ),

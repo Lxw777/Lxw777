@@ -14,9 +14,10 @@ class UserInfoProvider extends ChangeNotifier {
         : UserInfo(
             avatar: "",
             id: "未登录",
-            uid: "00000",
+            uid: "000000",
             password: "000000",
-          );
+            qq: "000000",
+            phone: "00000000000");
 
     return user;
   }
@@ -25,6 +26,21 @@ class UserInfoProvider extends ChangeNotifier {
     var temp = jsonEncode(userInfo.toJson());
     _store.write(StoreConst.User, temp);
     print("写入信息");
+    notifyListeners();
+  }
+
+  void logout() {
+    _store.write(
+        StoreConst.User,
+        jsonEncode(UserInfo(
+                avatar: "",
+                id: "未登录",
+                uid: "000000",
+                password: "000000",
+                qq: "000000",
+                phone: "00000000000")
+            .toJson()));
+    print("清空信息");
     notifyListeners();
   }
 }

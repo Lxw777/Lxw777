@@ -60,6 +60,10 @@ class HubUtil {
     EasyLoading.showSuccess(msg);
   }
 
+  static showError({String msg = "失败"}) {
+    EasyLoading.showError(msg);
+  }
+
   static dismiss() {
     EasyLoading.dismiss();
   }
